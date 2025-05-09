@@ -1,31 +1,32 @@
 name: flaskops
-on: [ push ]
+on: 
+  push:
+    branches: [ main ]
 
 jobs:
    build:
      runs-on: ubuntu-latest
      steps:
 
-       - name: check out repositroy
-         uses: action/checkout@v3
+       - name: Check out repositroy
+         uses: actions/checkout@v3
          
        - name: Docker setup
-         uses:  docker/setup-buildx-action@v3
-         with:
-           version: latest
+         uses: docker/setup-buildx-action@v3
+         
            
        - name: Docker build image
-         run: docker build -t flaskops .
+         run:  docker build -t flaskops .
 
        - name: Docker run container
-         run: docker run -d --publish 5000:5000 --name=flaskops flaskops
+         run:  docker run -d --publish 5000:5000 --name=flaskops flaskops
 
        - name: Web set up
-         run: sleep 30s
+         run:  sleep 30s
 
-       - name: check website is runing
-         run: curl  http://localhost:5000
+       - name: Check website is runing
+         run:  curl  http://localhost:5000
 
        - name: Stop docker container
-         run: docker ps -q | xargs docker stop
+         run: docker stop flaskops
         
